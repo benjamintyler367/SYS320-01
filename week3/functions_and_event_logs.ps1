@@ -21,3 +21,5 @@ $loginoutsTable += [pscustomobject]@{"Time" = $loginouts[$i].TimeGenerated
 }
 }
 $loginoutsTable
+
+##Left off at question 4
