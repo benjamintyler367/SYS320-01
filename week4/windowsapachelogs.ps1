@@ -15,5 +15,5 @@
 #Write-Output $ip.ForEach({( $_ -split "\s+" )[0]})
 
 #Deliverable 7:
-$ip = Get-Content C:\xampp\apache\logs\access.log | Select-String ' 404 '
+#$ip = Get-Content C:\xampp\apache\logs\access.log | Select-String ' 404 '
 Write-Output $ip.ForEach({( $_ -split "\s+" )[0]}) | Group-Object -NoElement
