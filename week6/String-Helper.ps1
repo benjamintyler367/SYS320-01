@@ -4,7 +4,18 @@
    operations. 
 ************************************************************* 
 #>
-
+function checkPassword($password){
+    $plainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password))
+    if(($plainPassword.length -ge 6) -and
+        ($plainPassword -match "[0-9]") -and
+        ($plainPassword -match "[a-zA-Z]") -and
+        ($plainPassword -match "[^a-zA-Z0-9]")){
+            return $true
+            }
+        else{
+            return $false
+            }
+        }
 
 <# ******************************************************
    Functions: Get Matching Lines

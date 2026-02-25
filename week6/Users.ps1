@@ -1,4 +1,13 @@
-﻿
+﻿function checkUser($name){
+    $getUser = Get-LocalUser | Where-Object { $_.name -ilike $name }
+    if($getUser){
+        return $true
+    }
+    else{
+        return $false
+    }
+}
+
 
 <# ******************************
 # Create a function that returns a list of NAMEs AND SIDs only for enabled users
@@ -10,14 +19,6 @@ function getEnabledUsers(){
 
 }
 
-$userName = Read-Host -Prompt "Please enter a username to see if it exists"
-
-if (getEnabledUsers -eq $True){
-Write-Host Get-LocalUser " is already in use"
-
-} ElseIf (getEnabledUser -eq $False){
-Write-Host Get-LocalUser " is not in use"
-}
 
 <# ******************************
 # Create a function that returns a list of NAMEs AND SIDs only for not enabled users

@@ -1,5 +1,5 @@
 ﻿#Deliverable 2:
-#Get-Content -Path "C:\xampp\apache\logs\access.log" -Tail 5
+Get-Content -Path "C:\xampp\apache\logs\access.log" -Tail 10
 
 #Deliverbale 3:
 #Get-Content C:\xampp\apache\logs\access.log | Select-String ' 404 '
@@ -16,4 +16,4 @@
 
 #Deliverable 7:
 #$ip = Get-Content C:\xampp\apache\logs\access.log | Select-String ' 404 '
-Write-Output $ip.ForEach({( $_ -split "\s+" )[0]}) | Group-Object -NoElement
+#Write-Output $ip.ForEach({( $_ -split "\s+" )[0]}) | Group-Object -NoElement

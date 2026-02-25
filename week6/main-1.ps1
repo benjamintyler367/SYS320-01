@@ -13,8 +13,8 @@ $Prompt += "5 - Enable a User`n"
 $Prompt += "6 - Disable a User`n"
 $Prompt += "7 - Get Log-In Logs`n"
 $Prompt += "8 - Get Failed Log-In Logs`n"
-$Prompt += "9 - Exit`n"
-
+$Prompt += "9 - list at risk users`n"
+$Prompt += "10 - Exit`n"
 
 
 $operation = $true
@@ -49,19 +49,23 @@ while($operation){
         $name = Read-Host -Prompt "Please enter the username for the new user"
         $password = Read-Host -AsSecureString -Prompt "Please enter the password for the new user"
 
+        if(checkUser $name){
+           Write-Host "User already exists"
+           continue
+           }
+
+        if(-not (checkPassword $password)){
+            Write-Host "Password is not strong enough"
+            continue
+            }
+
         # TODO: Create a function called checkUser in Users that: 
         #              - Checks if user a exists. 
         #              - If user exists, returns true, else returns false
-        . "C:\Users\champuser\SYS320-01\week6\Users.ps1"
-
-        $getEnabledUsers = getEnabledUsers
-
         # TODO: Check the given username with your new function.
         #              - If false is returned, continue with the rest of the function
         #              - If true is returned, do not continue and inform the user
-        
-
-
+        #
         # TODO: Create a function called checkPassword in String-Helper that:
         #              - Checks if the given string is at least 6 characters
         #              - Checks if the given string contains at least 1 special character, 1 number, and 1 letter
@@ -83,6 +87,10 @@ while($operation){
         $name = Read-Host -Prompt "Please enter the username for the user to be removed"
 
         # TODO: Check the given username with the checkUser function.
+        if((checkUser $name) -eq $false){
+            Write-Host "User doe s not exist"
+            continue
+            }
 
         removeAUser $name
 
@@ -97,7 +105,10 @@ while($operation){
         $name = Read-Host -Prompt "Please enter the username for the user to be enabled"
 
         # TODO: Check the given username with the checkUser function.
-
+        if((checkUser $name) -eq $false){
+            Write-Host "User does not exist"
+            continue
+            }
         enableAUser $name
 
         Write-Host "User: $name Enabled." | Out-String
@@ -110,6 +121,10 @@ while($operation){
         $name = Read-Host -Prompt "Please enter the username for the user to be disabled"
 
         # TODO: Check the given username with the checkUser function.
+        if((checkUser $name) -eq $false){
+            Write-Host "User does not exist"
+            continue
+            }
 
         disableAUser $name
 
@@ -123,7 +138,13 @@ while($operation){
 
         # TODO: Check the given username with the checkUser function.
 
-        $userLogins = getLogInAndOffs 90
+        if((checkUser $name) -eq $false){
+            Write-Host "User does not exist"
+            continue
+        }
+
+        $numberDays = Read-Host -Prompt "Number of days for user logs you want"
+        $userLogins = getLogInAndOffs $numberDays
         # TODO: Change the above line in a way that, the days 90 should be taken from the user
 
         Write-Host ($userLogins | Where-Object { $_.User -ilike "*$name"} | Format-Table | Out-String)
@@ -135,8 +156,12 @@ while($operation){
         $name = Read-Host -Prompt "Please enter the username for the user's failed login logs"
 
         # TODO: Check the given username with the checkUser function.
-
-        $userLogins = getFailedLogins 90
+        if((checkUser $name) -eq $false){
+            Write-Host "User does not exist"
+            continue
+            }
+        $numberDays = Read-Host -Prompt "Number of days for user logs you want"
+        $userLogins = getFailedLogins $numberDays
         # TODO: Change the above line in a way that, the days 90 should be taken from the user
 
         Write-Host ($userLogins | Where-Object { $_.User -ilike "*$name"} | Format-Table | Out-String)
@@ -147,13 +172,20 @@ while($operation){
     #              - Lists all the users with more than 10 failed logins in the last <User Given> days.  
     #                (You might need to create some failed logins to test)
     #              - Do not forget to update prompt and option numbers
-    
+    elseif($choice -eq 9){
+        $numberDays2 = Read-Host -Prompt "Please enter the amount of days youd liek to search back"
+        $failedLogins = getFailedLogins $numberDays2 | Group-Object -Property User | Where-Object { $_.Count -gt 10}
+        Write-Host ($failedLogins | Select-Object Name, Count | Format-Table | Out-String)
+        }
     # TODO: If user enters anything other than listed choices, e.g. a number that is not in the menu   
     #       or a character that should not be accepted. Give a proper message to the user and prompt again.
     
-
+    else {
+        Write-Host "Please slect a valid number between 1 and 10"
+        continue
 }
 
 
+}
 
-
+4
