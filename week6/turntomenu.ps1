@@ -14,19 +14,23 @@ while ($choice -ne 5) {
   Write-Host "5. Exit`n" 
 
   $choice = Read-Host -Prompt "Enter your choice (1-5)"
-  
+
+#working  
     if ($choice -eq 1) {
     Write-Host "Displaying Last 10 Apache Logs:`n"
     GetApacheLogs | Select-Object -Last 10 | Format-Table -AutoSize -Wrap
     }
+
     elseif ($choice -eq 2) {
-      getFailedLogins
+      getFailedLogins 365 | Select-Object -Last 10 | Format-Table
     }
+#working
     elseif ($choice -eq 3) {
       $numberDays2 = Read-Host -Prompt "Please enter the amount of days youd liek to search back"
       $failedLogins = getFailedLogins $numberDays2 | Group-Object -Property User | Where-Object { $_.Count -gt 10}
       Write-Host ($failedLogins | Select-Object Name, Count | Format-Table | Out-String)
     }
+#working
     elseif ($choice -eq 4) {
     
         if (Get-Process | Where-Object ProcessName -eq "chrome" ) {
@@ -38,6 +42,7 @@ while ($choice -ne 5) {
         Start-Process chrome.exe -ArgumentList "https://www.champlain.edu"
 }
     }
+#working
     elseif ($choice -eq 5) {
         Write-Host "menu exited"
     }
