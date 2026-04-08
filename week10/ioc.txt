@@ -1,0 +1,5 @@
+etc/shadow
+/bin/bash
+/bin/sh
+etc/passwd
+\.\./
