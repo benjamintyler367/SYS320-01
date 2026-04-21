@@ -4,20 +4,19 @@ myIP=$(ip addr | grep "/24 brd" | grep -o -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}
 
 # Todo-1: Create a helpmenu function that prints help for the script
 function HelpMenu(){
-	echo -e "\n"
-	echo "  HELP MENU  "
-	echo "-------------"
-	echo "-n: Add -n as an argument for this script to use nmap"
-	echo " -n external: External NMAP scan"
-	echo " -n internal: Internal NMAP scan"
-	echo "-s: Add -s as an argument for this script to use ss"
-	echo " -s external: External ss(NetStat) scan"
-	echo " -s internal: Internal ss(NetStat) scan"
-	echo -e "\n"
-
-	exit 1
+echo ""
+	echo "    help menu    "
+	echo "-----------------"
+	echo "-n: add -n as an argument for this script to use nmap"
+	echo "  -n external: External NMAP scan"
+	echo "  -n internal: Internal NMAP scan"
+	echo "-s: add -s as an argument for this script to use ss"
+	echo "  -s external: External ss(netstat) scan" 
+	echo "  -s internal: Internal ss(netstat) scan"
+	echo ""
+	echo "usage: ./networkchecker.bash <-n>/<-s> <external>/<internal>"
+	echo "-----------------"
 }
-
 
 # Return ports that are serving to the network
 function ExternalNmap(){
@@ -41,6 +40,9 @@ function ExternalListeningPorts(){
 }
 
 
+
+
+
 # Only IPv4 ports listening from localhost
 function InternalListeningPorts(){
 	ilpo=$(ss -ltpn | awk  -F"[[:space:]:(),]+" '/127.0.0./ {print $5,$9}' | tr -d "\"")
@@ -55,6 +57,8 @@ if [[ $# -ne 2 ]]; then
 	echo "Invalid amount of arguments!"
 	HelpMenu
 fi
+
+
 
 # Todo-4: Use getopts to accept options -n and -s (both will have an argument)
 # If the argument is not internal or external, call helpmenu
